@@ -32,13 +32,12 @@
             <collectionProp name="Arguments.arguments">
               <elementProp name="" elementType="HTTPArgument">
                 <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                <stringProp name="Argument.value">&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;&lt;document&gt;&lt;request&gt;&lt;head&gt;&lt;version&gt;1.0.0&lt;/version&gt;&lt;appId&gt;ALIPAY&lt;/appId&gt;&lt;function&gt;ant.jiebei.institution.credit.apply&lt;/function&gt;&lt;reqTime&gt;20170315171418&lt;/reqTime&gt;&lt;reqTimeZone&gt;UTC+8&lt;/reqTimeZone&gt;&lt;reqMsgId&gt;2017031517141817438789&lt;/reqMsgId&gt;&lt;reserve&gt;&lt;/reserve&gt;&lt;signType&gt;RSA&lt;/signType&gt;&lt;inputCharset&gt;UTF-8&lt;/inputCharset&gt;&lt;/head&gt;&lt;body&gt;&lt;applyNo&gt;201703151714181569638A&lt;/applyNo&gt;&lt;applyAmt&gt;0&lt;/applyAmt&gt;&lt;certType&gt;01&lt;/certType&gt;&lt;certNo&gt;340822199105180249&lt;/certNo&gt;&lt;name&gt;鐔婂皬鍜�&lt;/name&gt;&lt;mobileNo&gt;13223456543&lt;/mobileNo&gt;&lt;zmAuthFlag&gt;Y&lt;/zmAuthFlag&gt;&lt;extInfo&gt;&lt;/extInfo&gt;&lt;/body&gt;&lt;/request&gt;&lt;signature&gt;Ry+C2DdvMkZ9AXs1Vmq+XyHZ8jA3dFD1lwvbAW/JaZOKHWongY4evwbOMIg6Y2FGQ8w8dDs6UjUCScQn5TUlSTBlWVShKfIxJsn6yXlm/UAqen6qzDf0OrZscDMsjeMrO0GMfGETy7zzj/ZMD+gSoyPskI1P0knGC37o3AnTXv6JJxnwfwD4fz75DehVOvmTHWsLle78jIHeMae9u7AdVJ/7DephWnw6w42Yaanio7RMKyC5nI9e587mSRX33w+1boGYdS+DXPv9YSlaTRNsDVw0gdsl/NMo0Ekfk9CWgBGVGvkr4OGPOvMoaY5l9ol7fbPyZrUS40Ylf+drHwwCbg==&lt;/signature&gt;&lt;/document&gt;&#xd;
-</stringProp>
+                <stringProp name="Argument.value">${apiRequst}</stringProp>
                 <stringProp name="Argument.metadata">=</stringProp>
               </elementProp>
             </collectionProp>
           </elementProp>
-          <stringProp name="HTTPSampler.domain">10.80.2.51</stringProp>
+          <stringProp name="HTTPSampler.domain">10.80.2.60</stringProp>
           <stringProp name="HTTPSampler.port">8443</stringProp>
           <stringProp name="HTTPSampler.connect_timeout"></stringProp>
           <stringProp name="HTTPSampler.response_timeout"></stringProp>
@@ -53,7 +52,7 @@
           <stringProp name="HTTPSampler.implementation">HttpClient4</stringProp>
           <boolProp name="HTTPSampler.monitor">false</boolProp>
           <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
-          <stringProp name="TestPlan.comments">10.80.2.51:8443/api/apply/interface</stringProp>
+          <stringProp name="TestPlan.comments">10.80.2.51:8443/api/apply/interface   10.80.2.60</stringProp>
         </HTTPSamplerProxy>
         <hashTree>
           <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP信息头管理器" enabled="true">
@@ -69,8 +68,75 @@
             </collectionProp>
           </HeaderManager>
           <hashTree/>
+          <BeanShellPreProcessor guiclass="TestBeanGUI" testclass="BeanShellPreProcessor" testname="BeanShell PreProcessor" enabled="true">
+            <stringProp name="filename"></stringProp>
+            <stringProp name="parameters"></stringProp>
+            <boolProp name="resetInterpreter">false</boolProp>
+            <stringProp name="script">import api.RSADemo;
+String request = RSADemo.get_institution_credit_apply(&quot;340822199105180249&quot;,&quot;熊小咖&quot;, &quot;13223456543&quot;);
+log.info(request);
+vars.put(&quot;apiRequst&quot;,request);
+</stringProp>
+          </BeanShellPreProcessor>
+          <hashTree/>
+          <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="响应断言" enabled="true">
+            <collectionProp name="Asserion.test_strings">
+              <stringProp name="49586">200</stringProp>
+            </collectionProp>
+            <stringProp name="Assertion.test_field">Assertion.response_code</stringProp>
+            <boolProp name="Assertion.assume_success">false</boolProp>
+            <intProp name="Assertion.test_type">2</intProp>
+          </ResponseAssertion>
+          <hashTree/>
+          <XMLAssertion guiclass="XMLAssertionGui" testclass="XMLAssertion" testname="XML断言" enabled="true"/>
+          <hashTree/>
+          <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="响应断言" enabled="true">
+            <collectionProp name="Asserion.test_strings">
+              <stringProp name="799375">成功</stringProp>
+            </collectionProp>
+            <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+            <boolProp name="Assertion.assume_success">false</boolProp>
+            <intProp name="Assertion.test_type">16</intProp>
+          </ResponseAssertion>
+          <hashTree/>
         </hashTree>
         <ResultCollector guiclass="ViewResultsFullVisualizer" testclass="ResultCollector" testname="察看结果树" enabled="true">
+          <boolProp name="ResultCollector.error_logging">false</boolProp>
+          <objProp>
+            <name>saveConfig</name>
+            <value class="SampleSaveConfiguration">
+              <time>true</time>
+              <latency>true</latency>
+              <timestamp>true</timestamp>
+              <success>true</success>
+              <label>true</label>
+              <code>true</code>
+              <message>true</message>
+              <threadName>true</threadName>
+              <dataType>true</dataType>
+              <encoding>false</encoding>
+              <assertions>true</assertions>
+              <subresults>true</subresults>
+              <responseData>false</responseData>
+              <samplerData>false</samplerData>
+              <xml>false</xml>
+              <fieldNames>true</fieldNames>
+              <responseHeaders>false</responseHeaders>
+              <requestHeaders>false</requestHeaders>
+              <responseDataOnError>false</responseDataOnError>
+              <saveAssertionResultsFailureMessage>true</saveAssertionResultsFailureMessage>
+              <assertionsResultsToSave>0</assertionsResultsToSave>
+              <bytes>true</bytes>
+              <sentBytes>true</sentBytes>
+              <threadCounts>true</threadCounts>
+              <idleTime>true</idleTime>
+              <connectTime>true</connectTime>
+            </value>
+          </objProp>
+          <stringProp name="filename"></stringProp>
+        </ResultCollector>
+        <hashTree/>
+        <ResultCollector guiclass="StatVisualizer" testclass="ResultCollector" testname="聚合报告" enabled="true">
           <boolProp name="ResultCollector.error_logging">false</boolProp>
           <objProp>
             <name>saveConfig</name>
